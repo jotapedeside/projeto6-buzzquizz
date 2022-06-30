@@ -1,17 +1,25 @@
+
+
+
+
+
+
+
+
+
 function criarQuizz () {
     const conteiner = document.querySelector('.conteiner');
     conteiner.innerHTML = `
         <div class="criarInfoBasicas">
-        <span>Comece pelo começo</span>
-        <div>
-            <input type="text" placeholder="Título do seu quizz">
-            <input type="text" placeholder="URL da imagem do seu quizz">
-            <input type="text" placeholder="Quantidade de perguntas do quizz">
-            <input type="text" placeholder="Quantidade de níveis do quizz">
-        </div>
+            <span>Comece pelo começo</span>
+            <div>
+                <input type="text" placeholder="Título do seu quizz">
+                <input type="text" placeholder="URL da imagem do seu quizz">
+                <input type="text" placeholder="Quantidade de perguntas do quizz">
+                <input type="text" placeholder="Quantidade de níveis do quizz">
+            </div>
 
-        <button onclick="validarInfoBasica ()">Prosseguir pra criar perguntas</button>
-
+            <button onclick="validarInfoBasica ()">Prosseguir pra criar perguntas</button>
         </div>
         `
         
@@ -58,4 +66,9 @@ function validarInfoBasica (){
         alert('Preencha os dados novamente.')
     }
 
+}
+
+
+function infoNiveis (quantidadeNiveis){
+    
 }
