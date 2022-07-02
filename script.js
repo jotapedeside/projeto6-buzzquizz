@@ -28,8 +28,7 @@ function criarQuizz() {
 function validarInfoBasica() {
   let input = document.querySelectorAll(".criarInfoBasicas input");
   let tituloValido;
-  if (input[0].value.length > 0 && input[0].value.length < 66) {
-    //19, not 0
+  if (input[0].value.length > 19 && input[0].value.length < 66) {
     tituloValido = true;
   }
 
@@ -45,13 +44,12 @@ function validarInfoBasica() {
   }*/
 
   let quantidadePerguntasValida;
-  if (input[2].value > 1) {
-    //2, not 1
+  if (input[2].value > 2) {
     quantidadePerguntasValida = true;
   }
 
   let quantidadeNiveisValido;
-  if (input[3].value >= 1) {
+  if (input[3].value > 1) {
     quantidadeNiveisValido = true;
   }
 
@@ -210,5 +208,7 @@ function validateQuizzLevels(quiz) {
     input[3].value < 30
   )
     alert("Cheque os dados e tente novamente!");
-  else console.log("Níveis corretos");
+  else if (input[1].value.indexOf(0) != -1) {
+    console.log("Pode seguir");
+  }
 }
