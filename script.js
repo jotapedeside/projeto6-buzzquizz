@@ -1,20 +1,16 @@
-
-const conteiner = document.querySelector('.conteiner');
+const conteiner = document.querySelector(".conteiner");
 let quantidadeNiveis;
 let quantidadePerguntas;
 let quizz = {
-	title: "",
-	image: "",
-	questions: [],
-	levels: []
-}
+  title: "",
+  image: "",
+  questions: [],
+  levels: [],
+};
+const regexURL = /(https?):\/\/.*\.(jpg|jpeg|png|webp|avif|gif|svg)/; //regex to check if URL is valid
 
-
-
-
-
-function criarQuizz () {
-    conteiner.innerHTML = `
+function criarQuizz() {
+  conteiner.innerHTML = `
         <div class="criarInfoBasicas">
             <span>Comece pelo começo</span>
             <div>
@@ -26,60 +22,57 @@ function criarQuizz () {
 
             <button onclick="validarInfoBasica ()">Prosseguir pra criar perguntas</button>
         </div>
-        `
-        
+        `;
 }
 
+function validarInfoBasica() {
+  let input = document.querySelectorAll(".criarInfoBasicas input");
+  let tituloValido;
+  if (input[0].value.length > 0 && input[0].value.length < 66) {
+    //19, not 0
+    tituloValido = true;
+  }
 
-function validarInfoBasica (){
-    let input = document.querySelectorAll('.criarInfoBasicas input');
-    let tituloValido;
-     if (19 < input[0].value.length && input[0].value.length < 66){
-        tituloValido = true;
-    };
-
-
-    let urlValida;
-    for (let i =0; i < 8; i++){
-        const url = "https://"
-        if (input[1].value[i] !== url[i]){
-            break;
-        }
-        if (i === 7){
-            urlValida = true
-        }
-        
+  let urlValida; /*
+  for (let i = 0; i < 8; i++) {
+    const url = "https://";
+    if (input[1].value[i] !== url[i]) {
+      break;
     }
-
-
-
-    let quantidadePerguntasValida;
-    if(input[2].value > 2){
-        quantidadePerguntasValida = true
+    if (i === 7) {*/
+  urlValida = true; /*
     }
+  }*/
 
+  let quantidadePerguntasValida;
+  if (input[2].value > 1) {
+    //2, not 1
+    quantidadePerguntasValida = true;
+  }
 
+  let quantidadeNiveisValido;
+  if (input[3].value >= 1) {
+    quantidadeNiveisValido = true;
+  }
 
-    let quantidadeNiveisValido;
-    if(input[3].value > 1){
-        quantidadeNiveisValido = true
-    }
-
-    if(tituloValido && urlValida && quantidadePerguntasValida && quantidadeNiveisValido){
-        quizz.title = input[0].value;
-        quizz.image = input[1].value;
-        quantidadePerguntas = input[2].value;
-        quantidadeNiveis = input[3].value;
-        criarPerguntas();
-    }else{
-        alert('Preencha os dados novamente.')
-    }
-
-
+  if (
+    tituloValido &&
+    urlValida &&
+    quantidadePerguntasValida &&
+    quantidadeNiveisValido
+  ) {
+    quizz.title = input[0].value;
+    quizz.image = input[1].value;
+    quantidadePerguntas = input[2].value;
+    quantidadeNiveis = input[3].value;
+    criarPerguntas();
+  } else {
+    alert("Preencha os dados novamente.");
+  }
 }
 
-function criarPerguntas(){
-    conteiner.innerHTML = `
+function criarPerguntas() {
+  conteiner.innerHTML = `
         <div class="criarInfoPerguntas">
             <span>Crie suas perguntas</span>
 
@@ -87,13 +80,13 @@ function criarPerguntas(){
 
             </ul>
 
-            <button onclick="validarPerguntas ()">Prosseguir pra criar níveis</button>
+            <button onclick="validarPerguntas()">Prosseguir pra criar níveis</button>
         </div>
-    ` 
+    `;
 
-    const ul = document.querySelector('ul');
-    for (let i = 0; i < quantidadePerguntas; i++){
-        ul.innerHTML += `
+  const ul = document.querySelector("ul");
+  for (let i = 0; i < quantidadePerguntas; i++) {
+    ul.innerHTML += `
                 <li class="conteinerPergunta"> 
                             
                     <div class="headerPergunta">
@@ -132,44 +125,43 @@ function criarPerguntas(){
                     </div>
                                 
                 </li>
-        `
-    }
+        `;
+  }
 }
 
+function validarPerguntas() {
+  let arrayPerguntas = document.querySelectorAll("li");
+  let perguntasValidas = [];
+  for (let i = 0; i < quantidadePerguntas; i++) {
+    let inputs = arrayPerguntas[i].querySelectorAll("input");
+    let textoValido;
+    let corValida;
+    let corretaValida;
+    let imgCorretaValida;
+    let incorretasValida;
 
-function validarPerguntas(){
-    let arrayPerguntas = document.querySelectorAll('li');
-    let perguntasValidas = [];
-    for(let i = 0; i < quantidadePerguntas; i++){
-        let inputs = arrayPerguntas[i].querySelectorAll('input');
-        let textoValido;
-        let corValida;
-        let corretaValida;
-        let imgCorretaValida;
-        let incorretasValida;
-
-        if(inputs[0].length > 19){
-            textoValido = true
-        }
+    if (inputs[0].length > 19) {
+      textoValido = true;
     }
-
+  }
+  criarNiveis();
 }
 
-function criarNiveis (){
-    conteiner.innerHTML = `
+function criarNiveis() {
+  conteiner.innerHTML = `
     <div class="criarInfoNiveis">
         <span>Agora, decida os níveis</span>
 
         <ul>
         </ul>
 
-        <button onclick="validarNiveis ()">Finalizar Quizz</button>
+        <button onclick="validateQuizzLevels()">Finalizar Quizz</button>
     </div>
-    `
+    `;
 
-    const ul = document.querySelector('ul');
-    for (let i = 0; i < quantidadeNiveis; i++){
-        ul.innerHTML += `
+  const ul = document.querySelector("ul");
+  for (let i = 0; i < quantidadeNiveis; i++) {
+    ul.innerHTML += `
             <li class="conteinerNivel"> 
                         
                 <div class="headerNivel">
@@ -184,29 +176,39 @@ function criarNiveis (){
                 </div>
                             
             </li>
-        `
-    }
+        `;
+  }
 }
 
-function escondeInfo(conteiner,icon){
-    let inputs = conteiner.querySelectorAll('div')[1];
-    let temSelecionado = document.querySelector('li.expandido');
+function escondeInfo(conteiner, icon) {
+  let inputs = conteiner.querySelectorAll("div")[1];
+  let temSelecionado = document.querySelector("li.expandido");
 
-    if(temSelecionado !== null){
-        let inputExpandido = temSelecionado.querySelectorAll('div')[1];
-        inputExpandido.classList.toggle('escondido');
-        temSelecionado.querySelector('ion-icon').classList.remove('escondido');
-        temSelecionado.classList.remove('expandido')
+  if (temSelecionado !== null) {
+    let inputExpandido = temSelecionado.querySelectorAll("div")[1];
+    inputExpandido.classList.toggle("escondido");
+    temSelecionado.querySelector("ion-icon").classList.remove("escondido");
+    temSelecionado.classList.remove("expandido");
+  }
 
-    }
+  icon.classList.add("escondido");
+  conteiner.classList.add("expandido");
 
-
-    icon.classList.add('escondido');
-    conteiner.classList.add('expandido')
-
-    
-    inputs.classList.toggle('escondido');
-
-
+  inputs.classList.toggle("escondido");
 }
 
+function validateQuizzLevels(quiz) {
+  let input = document.querySelectorAll(".criarInfoNiveis input");
+  let quizzLevelsValid;
+  console.log(input.value);
+  //TODO test url
+  if (
+    input[0].value.length < 10 ||
+    input[1].value < 0 ||
+    input[1].value > 100 ||
+    regexURL.test(input[2].value) == false ||
+    input[3].value < 30
+  )
+    alert("Cheque os dados e tente novamente!");
+  else console.log("Níveis corretos");
+}
