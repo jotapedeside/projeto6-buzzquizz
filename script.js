@@ -210,7 +210,9 @@ function escondeInfo(conteiner, icon) {
 
 function validateQuizzLevels(quiz) {
   let input = document.querySelectorAll(".inputNivel");
-  let quizzLevelsValid;
+  let quizzLevelsValid = false;
+  let hasError = false;
+
   const arraEl = [];
   for (let i = 0; i < input.length; i++) {
     const obj = {};
@@ -224,20 +226,25 @@ function validateQuizzLevels(quiz) {
 
   console.log(arraEl);
 
-  //TODO test url
-  if (
-    arraEl[0].title.length < 10 ||
-    arraEl[0].minVale < 0 ||
-    arraEl[0].minVale > 100 ||
-    regexURL.test(arraEl[0].image) == false ||
-    arraEl[0].text.length < 30
-  )
-    alert("Cheque os dados e tente novamente!");
-  else if (
+  for (let ii = 0; ii < arraEl.length; ii++) {
+    if (
+      arraEl[ii].title.length < 10 ||
+      arraEl[ii].minValue < 0 ||
+      arraEl[ii].minValue > 100 ||
+      regexURL.test(arraEl[ii].image) == false ||
+      arraEl[ii].text.length < 30
+    )
+      hasError = true;
+  }
+  if (hasError == true) {
+    alert(`Cheque os dados e tente novamente!`);
+  } else if (
     arraEl.find((el) => {
       return el.minValue == "0";
     })
   ) {
-    console.log("Pode seguir");
-  }
+    quizzLevelsValid = true;
+    //chamar próx func
+  } else alert(`Precisa de pelo menos um nível com 0% de acerto mínimo`);
+  console.log(quizzLevelsValid);
 }
