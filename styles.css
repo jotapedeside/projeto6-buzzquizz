@@ -1,10 +1,10 @@
 * {
   box-sizing: border-box;
-  font-family: "Roboto", sans-serif;
 }
 
 body {
   background-color: #e5e5e5;
+  font-family: Roboto;
 }
 
 .topo {
@@ -121,7 +121,8 @@ button {
   margin-top: 80px;
 }
 
-.criarInfoPerguntas {
+.criarInfoPerguntas,
+.criarInfoNiveis {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -129,7 +130,8 @@ button {
   margin-top: 80px;
 }
 
-.criarInfoPerguntas > span {
+.criarInfoPerguntas > span,
+.criarInfoNiveis > span {
   font-size: 23px;
   line-height: 27px;
   font-weight: 700;
@@ -142,19 +144,22 @@ button {
 .headerNivel {
 }
 
-.headerNivel span {
+.headerNivel span,
+.conteinerPergunta span {
   font-weight: 700;
   font-size: 20px;
 }
 
-.headerNivel ion-icon {
+.headerNivel ion-icon,
+.headerPergunta ion-icon {
   position: absolute;
   right: 0;
   font-weight: 700;
   font-size: 23px;
 }
 
-.conteinerNivel {
+.conteinerNivel,
+.conteinerPergunta {
   position: relative;
   width: 600px;
   height: 74px;
@@ -185,7 +190,8 @@ button {
   align-items: center;
 }
 
-.headerNivel {
+.headerNivel,
+.headerPergunta {
   position: absolute;
   top: 27px;
   left: 5%;
@@ -193,52 +199,6 @@ button {
 }
 
 /*---------------------------------------------------------------------------------------------------------*/
-
-.criarInfoPerguntas {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 80px;
-}
-
-.criarInfoPerguntas > span {
-  font-size: 23px;
-  line-height: 27px;
-  font-weight: 700;
-  align-items: left;
-  color: #000000;
-  margin-left: 5%;
-  margin-bottom: 12px;
-}
-
-.conteinerPergunta span {
-  font-weight: 700;
-  font-size: 20px;
-}
-
-.headerPergunta ion-icon {
-  position: absolute;
-  right: 0;
-  font-weight: 700;
-  font-size: 23px;
-}
-
-.conteinerPergunta {
-  position: relative;
-  width: 600px;
-  height: 74px;
-  overflow-y: hidden;
-  background: #ffffff;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
-  margin-top: 30px;
-  margin-bottom: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  transition: height 0.5s;
-}
 
 .conteinerPergunta.expandido {
   height: 825px;
@@ -294,13 +254,6 @@ button {
   position: absolute;
   left: 5%;
   top: 377px;
-}
-
-.headerPergunta {
-  position: absolute;
-  top: 27px;
-  left: 5%;
-  right: 5%;
 }
 
 .escondido {
