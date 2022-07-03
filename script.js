@@ -8,6 +8,9 @@ let quizz = {
 	questions: [],
 	levels: []
 }
+let 
+const regexHex = /^#[0-9A-F]{6}$/i;
+const regexURL = /(https?):\/\/.*\.(jpg|jpeg|png|webp|avif|gif|svg)/;
 
 
 
@@ -40,15 +43,8 @@ function validarInfoBasica (){
 
 
     let urlValida;
-    for (let i =0; i < 8; i++){
-        const url = "https://"
-        if (input[1].value[i] !== url[i]){
-            break;
-        }
-        if (i === 7){
-            urlValida = true
-        }
-        
+    if (regexURL.test(input[1].value)){
+        urlValida = true
     }
 
 
@@ -103,8 +99,8 @@ function criarPerguntas(){
                     <div class="inputPergunta escondido">
 
                         <div class="textoPergunta">
-                            <input type="text" placeholder="Texto da pergunta">
-                            <input type="text" placeholder="Cor de fundo da pergunta">
+                            <input type="text" name="title" placeholder="Texto da pergunta">
+                            <input type="text" name="color" placeholder="Cor de fundo da pergunta">
                         </div>
 
                         <span>Resposta correta</span>
@@ -137,22 +133,70 @@ function criarPerguntas(){
 }
 
 
+//function validarPerguntas(){
+//     let arrayPerguntas = document.querySelectorAll('li');
+//     let perguntasValidas = [];
+//     for(let i = 0; i < quantidadePerguntas; i++){
+//         let inputs = arrayPerguntas[i].querySelectorAll('input');
+//         let textoValido = () => inputs[0].length > 19;
+
+//         let corValida;
+//         if(regexHex.test(inputs[1].value)){
+//             corValida = true;
+//         }
+
+//         let corretaValida;
+//         if(inputs[2].value !== ''){
+//             corretaValida = true;
+//         }
+
+//         let imgCorretaValida;
+//         if(regexURL.test(inputs[3].value)){
+//             imgCorretaValida = true;
+//         }
+
+
+//         let incorretasValida = () => {
+//             let validas = [];
+//             for (let i = 4; i < 10; i += 2){
+//                 let contador = 0;
+//                 if(inputs[i].value !== ''){
+//                     contador++
+//                     validas.push(i);
+//                 }
+//             }
+//             if(contador === 0){
+//                 return false;
+//                 break;
+//             }
+//             for(let i = 0; i < validas.length; i++){
+//                 if(!regexURL.test(inputs[validas[i]+1].value)){
+//                     return false;
+//                     break;
+//                 }
+//             }else{
+
+//             }
+//         }
+
+
+//     }
+
+// }
+
+
 function validarPerguntas(){
-    let arrayPerguntas = document.querySelectorAll('li');
-    let perguntasValidas = [];
-    for(let i = 0; i < quantidadePerguntas; i++){
-        let inputs = arrayPerguntas[i].querySelectorAll('input');
-        let textoValido;
-        let corValida;
-        let corretaValida;
-        let imgCorretaValida;
-        let incorretasValida;
+    let input = document.querySelectorAll('.inputPergunta');
+    let quizzAnswersValid = false;
+    let hasError = false;
 
-        if(inputs[0].length > 19){
-            textoValido = true
-        }
+    const arr = [];
+    const resps =[];
+    for(let i = 0; i < input.length; i++){
+        cont obj = [];
+        for (let j = 0; j < input[i].childNodes.length; j++){
+            
     }
-
 }
 
 function criarNiveis (){
