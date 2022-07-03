@@ -13,26 +13,24 @@ function criarQuizz() {
   conteiner.innerHTML = `
         <div class="criarInfoBasicas">
             <span>Comece pelo começo</span>
-            <div>
-                <input type="text" placeholder="Título do seu quizz">
-                <input type="text" placeholder="URL da imagem do seu quizz">
-                <input type="text" placeholder="Quantidade de perguntas do quizz">
-                <input type="text" placeholder="Quantidade de níveis do quizz">
+            <div class="inputBasicInfo">
+                <input name="title" type="text" placeholder="Título do seu quizz">
+                <input name="image" type="text" placeholder="URL da imagem do seu quizz">
+                <input name="qtdeQuestions" type="text" placeholder="Quantidade de perguntas do quizz">
+                <input name="qtdeLevels" type="text" placeholder="Quantidade de níveis do quizz">
             </div>
 
-            <button onclick="validarInfoBasica ()">Prosseguir pra criar perguntas</button>
+            <button onclick="validarInfoBasica()">Prosseguir pra criar perguntas</button>
         </div>
         `;
 }
 
 function validarInfoBasica() {
-  let input = document.querySelectorAll(".criarInfoBasicas input");
-  let tituloValido;
-  let urlValida;
-  let quantidadePerguntasValida;
-  let quantidadeNiveisValido;
+  let input = document.querySelectorAll(".inputBasicInfo input");
+  let hasError = false;
 
   //LAZIER
+  /*
   input[0].value = "Título do quizzzzz";
   input[1].value =
     "https://veja.abril.com.br/wp-content/uploads/2019/12/amazonia-floresta-coraccca7ao.jpg.jpg";
@@ -42,44 +40,26 @@ function validarInfoBasica() {
   quizz.image = input[1].value;
   quantidadePerguntas = input[2].value;
   quantidadeNiveis = input[3].value;
-  criarPerguntas();
-  /*
-  if (input[0].value.length > 19 && input[0].value.length < 66) {
-    tituloValido = true;
-  }
-
-  for (let i = 0; i < 8; i++) {
-    const url = "https://";
-    if (input[1].value[i] !== url[i]) {
-      break;
-    }
-    if (i === 7) {
-      urlValida = true;
-    }
-  }
-
-  if (input[2].value > 2) {
-    quantidadePerguntasValida = true;
-  }
-
-  if (input[3].value > 1) {
-    quantidadeNiveisValido = true;
-  }
+  criarPerguntas();*/
 
   if (
-    tituloValido &&
-    urlValida &&
-    quantidadePerguntasValida &&
-    quantidadeNiveisValido
+    (input.title.length <= 20 && input.value.length >= 65) ||
+    regexURL.test(input.image) == false ||
+    input.qtdeQuestions <= 3 ||
+    input.qtdeLevels <= 2
   ) {
+    hasError = true;
+  }
+
+  if (hasError == true) {
+    alert(`Cheque os dados e tente novamente!`);
+  } else {
     quizz.title = input[0].value;
     quizz.image = input[1].value;
     quantidadePerguntas = input[2].value;
     quantidadeNiveis = input[3].value;
     criarPerguntas();
-  } else {
-    alert("Preencha os dados novamente.");
-  }*/
+  }
 }
 
 function criarPerguntas() {
@@ -139,8 +119,6 @@ function criarPerguntas() {
         `;
   }
 }
-
-
 
 function criarNiveis() {
   conteiner.innerHTML = `
@@ -228,19 +206,23 @@ function validateQuizzLevels(quiz) {
     })
   ) {
     quizzLevelsValid = true;
-    postQuizz ();
+    postQuizz();
   } else alert(`Precisa de pelo menos um nível com 0% de acerto mínimo`);
   console.log(quizzLevelsValid);
 }
 
-
-function postQuizz (){
-  let promise = axios.post('https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes',quizz);
-  promise.then(quizzUploaded)
-  promise.catch(() => {alert('algo deu errado')});
+function postQuizz() {
+  let promise = axios.post(
+    "https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes",
+    quizz
+  );
+  promise.then(quizzUploaded);
+  promise.catch(() => {
+    alert("algo deu errado");
+  });
 }
 
-function quizzUploaded(){
+function quizzUploaded() {
   conteiner.innerHTML = `
     <div class="quizzPronto">
       <span>Seu quizz está pronto!</span>
@@ -254,10 +236,6 @@ function quizzUploaded(){
       <p onclick="renderizarPaginaInicial()">Voltar pra home</p>
     </div>
   `;
-
 }
 
-function renderizarQuizz(){
-  
-}
-
+function renderizarQuizz() {}
