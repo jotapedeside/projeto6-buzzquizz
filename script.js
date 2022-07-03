@@ -386,7 +386,36 @@ function validateQuizzLevels() {
     })
   ) {
     quizzLevelsValid = true;
-    //chamar próx func
+    postQuizz();
   } else alert(`Precisa de pelo menos um nível com 0% de acerto mínimo`);
   console.log(quizzLevelsValid);
 }
+
+function postQuizz() {
+  let promise = axios.post(
+    "https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes",
+    quizz
+  );
+  promise.then(quizzUploaded);
+  promise.catch(() => {
+    alert("algo deu errado");
+  });
+}
+
+function quizzUploaded() {
+  conteiner.innerHTML = `
+    <div class="quizzPronto">
+      <span>Seu quizz está pronto!</span>
+
+      <div class="quizzCriado" onclick="renderizarQuizz(${quizz})" style="background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 65.62%, rgba(0, 0, 0, 0.8) 100%),url('${quizz.image}')">
+          
+          <p>${quizz.title}</p>
+      </div>
+
+      <button onclick="renderizarQuizz(${quizz})">Acessar Quizz</button>
+      <p onclick="renderizarPaginaInicial()">Voltar pra home</p>
+    </div>
+  `;
+}
+
+function renderizarQuizz() {}
