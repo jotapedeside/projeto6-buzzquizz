@@ -44,6 +44,7 @@ body {
   font-size: 20px;
   color: #b9b9b9;
   margin-top: 80px;
+  margin-bottom: 80px;
 }
 
 .seusQuizzesVazio button {
@@ -141,11 +142,9 @@ button {
   margin-bottom: 12px;
 }
 
-.headerNivel {
-}
-
 .headerNivel span,
-.conteinerPergunta span {
+.conteinerPergunta span,
+.conteiner > span {
   font-weight: 700;
   font-size: 20px;
 }
@@ -267,7 +266,7 @@ button {
 
 
 
-.quizzCriado p, .quizzExibido p{
+.quizzCriado p{
   position: absolute;
   color: #FFFFFF;
   font-weight: 400;
@@ -289,17 +288,32 @@ button {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  background-color: red;
+  justify-content: space-between;
+  margin-top: 12px;
+
   
 }
 
 .quizzExibido{
   position: relative;
-  /*width: 340px;*/
-  width: 33%;
+  width: 32.5%;
   height: 181px;
   border-radius: 5px;
   background-size: cover;
+  margin-bottom: 12px;
+  overflow-wrap:anywhere;
+  
+}
+
+.quizzExibido p{
+  font-weight: 400;
+  font-size: 19px;
+  color: #ffffff;
+  position: absolute;
+  bottom: 5px;
+  left: 5%;
+
+  
 }
 
 .escondido {
