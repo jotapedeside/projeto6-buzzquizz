@@ -471,10 +471,15 @@ function selecionaReposta(selecionada, certa){
 
 
     selecionada.classList.add('selecionado');
+    setTimeout(() => {
+      if(document.querySelectorAll('.pergunta').length !== document.querySelectorAll('.selecionado').length){
+        document.querySelector('.naoSelecionado').parentNode.scrollIntoView();
+      }
+    }, 2000)
   }
 
   if(document.querySelectorAll('.pergunta').length === document.querySelectorAll('.selecionado').length){
-    let respostasCertas = document.querySelectorAll('.selecionado .true').length;
+    let respostasCertas = document.querySelectorAll('.selecionado.true').length;
     let numQuestoes = document.querySelectorAll('.pergunta').length;
     let ratio = Math.ceil((respostasCertas/numQuestoes)*100);
     let valorNiveis = []
@@ -494,14 +499,19 @@ function selecionaReposta(selecionada, certa){
     for(let i = 0; i < niveis.length; i++){
       if(nivelObtido === niveis[i].minValue){
         index = i;
+
+        setTimeout(() => {
+          renderizarNivel(index,ratio);
+        } ,2000)
+
         break
       }
     }
-    renderizarNivel(index,ratio);
   }
 }
 
 function renderizarNivel (index,ratio){
+
   document.querySelector('.perguntas').innerHTML +=`
     <div class="templateNivel">
       <div class="tituloNivel">
@@ -519,4 +529,6 @@ function renderizarNivel (index,ratio){
       </div>
   </div>
   `;
+
+  document.querySelector('.templateNivel').scrollIntoView();
 }
