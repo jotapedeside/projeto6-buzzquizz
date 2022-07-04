@@ -26,8 +26,8 @@ body {
 .conteiner {
   position: absolute;
   top: 70px;
-  left: 15%;
-  right: 15%;
+  left: 8.5%;
+  right: 8.5%;
 }
 
 .seusQuizzesVazio {
@@ -265,16 +265,9 @@ button {
   background-size: cover;
 }
 
-.quizzCriado img{
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-radius: 5px;
-}
 
-.quizzCriado p{
+
+.quizzCriado p, .quizzExibido p{
   position: absolute;
   color: #FFFFFF;
   font-weight: 400;
@@ -288,6 +281,25 @@ button {
   font-size: 21px;
   color: #818181; 
   margin-top: 10px;
+}
+
+/*----------------------------------------------------------------------*/
+
+.todosOsQuizzes{
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  background-color: red;
+  
+}
+
+.quizzExibido{
+  position: relative;
+  /*width: 340px;*/
+  width: 33%;
+  height: 181px;
+  border-radius: 5px;
+  background-size: cover;
 }
 
 .escondido {
