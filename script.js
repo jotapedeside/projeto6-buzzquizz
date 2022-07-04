@@ -31,17 +31,6 @@ function validarInfoBasica() {
   let hasError = false;
 
   //LAZIER
-  /*
-  input[0].value = "Título do quizzzzz";
-  input[1].value =
-    "https://veja.abril.com.br/wp-content/uploads/2019/12/amazonia-floresta-coraccca7ao.jpg.jpg";
-  input[2].value = "3";
-  input[3].value = "2";
-  quizz.title = input[0].value;
-  quizz.image = input[1].value;
-  quantidadePerguntas = input[2].value;
-  quantidadeNiveis = input[3].value;
-  criarPerguntas();*/
 
   const objBasicInfo = {};
   for (let j = 0; j < input.childNodes.length; j++) {
@@ -134,7 +123,7 @@ function validarPerguntas() {
   let inputIncorrectAnswer2 = document.querySelectorAll(".incorrect2");
   let inputIncorrectAnswer3 = document.querySelectorAll(".incorrect3");
 
-  let quizzLevelsValid = false;
+  let quizzQuestionsValid = false;
   let hasError = false;
 
   const arrQuestion = [];
@@ -245,12 +234,26 @@ function validarPerguntas() {
   if (hasError == true) {
     alert(`Cheque as perguntas e tente novamente!`);
   } else {
-    quizzLevelsValid = true;
+    quizzQuestionsValid = true;
+
+    //parse info to quizz global var
+    //arrQuestion
+    //arrCorrectAnswer
+    //objIncorrectAnswer1
+    //objIncorrectAnswer2
+    //objIncorrectAnswer3
+
+    //    quizz.questions =
+    console.log(arrQuestion);
+    console.log(arrCorrectAnswer);
+    console.log(objIncorrectAnswer1);
+    console.log(objIncorrectAnswer2);
+    console.log(objIncorrectAnswer3);
 
     criarNiveis();
   }
   console.log(hasError);
-  console.log(quizzLevelsValid);
+  console.log(quizzQuestionsValid);
 }
 
 function criarNiveis() {
@@ -339,6 +342,8 @@ function validateQuizzLevels() {
     })
   ) {
     quizzLevelsValid = true;
+    //parse info to quizz global var
+
     postQuizz();
   } else alert(`Precisa de pelo menos um nível com 0% de acerto mínimo`);
   console.log(quizzLevelsValid);
@@ -371,17 +376,18 @@ function quizzUploaded() {
   `;
 }
 
-function getQuizz(){
-  let promise = axios.get('https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes');
+function getQuizz() {
+  let promise = axios.get(
+    "https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes"
+  );
   promise.then(exibeQuizz);
-
 }
 getQuizz();
 
-function exibeQuizz(resposta){
+function exibeQuizz(resposta) {
   let quizzes = resposta.data;
-  let areaQuizzesServidor = document.querySelector('.todosOsQuizzes');
-  for(let i = 0;i < quizzes.length; i++){
+  let areaQuizzesServidor = document.querySelector(".todosOsQuizzes");
+  for (let i = 0; i < quizzes.length; i++) {
     areaQuizzesServidor.innerHTML += `
 
 
@@ -393,7 +399,5 @@ function exibeQuizz(resposta){
 
 
     `;
-  
   }
-
 }
