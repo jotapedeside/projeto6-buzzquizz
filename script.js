@@ -27,7 +27,7 @@ function criarQuizz() {
 }
 
 function validarInfoBasica() {
-  let input = document.querySelectorAll(".inputBasicInfo input");
+  let input = document.querySelector(".inputBasicInfo");
   let hasError = false;
 
   //LAZIER
@@ -43,11 +43,19 @@ function validarInfoBasica() {
   quantidadeNiveis = input[3].value;
   criarPerguntas();*/
 
+  const objBasicInfo = {};
+  for (let j = 0; j < input.childNodes.length; j++) {
+    if (input.childNodes[j].nodeType == 1) {
+      objBasicInfo[input.childNodes[j].name] = input.childNodes[j].value;
+    }
+  }
+  console.log(objBasicInfo.title);
+
   if (
-    (input.title.length <= 20 && input.value.length >= 65) ||
-    regexURL.test(input.image) == false ||
-    input.qtdeQuestions <= 3 ||
-    input.qtdeLevels <= 2
+    (objBasicInfo.title.length <= 20 && objBasicInfo.title.length >= 65) ||
+    regexURL.test(objBasicInfo.image) == false ||
+    objBasicInfo.qtdeQuestions <= 3 ||
+    objBasicInfo.qtdeLevels <= 2
   ) {
     hasError = true;
   }
@@ -55,10 +63,10 @@ function validarInfoBasica() {
   if (hasError == true) {
     alert(`Cheque os dados e tente novamente!`);
   } else {
-    quizz.title = input[0].value;
-    quizz.image = input[1].value;
-    quantidadePerguntas = input[2].value;
-    quantidadeNiveis = input[3].value;
+    quizz.title = objBasicInfo.title;
+    quizz.image = objBasicInfo.image;
+    quantidadePerguntas = objBasicInfo.qtdeQuestions;
+    quantidadeNiveis = objBasicInfo.qtdeLevels;
     criarPerguntas();
   }
 }
