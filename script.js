@@ -371,4 +371,29 @@ function quizzUploaded() {
   `;
 }
 
-function renderizarQuizz() {}
+function getQuizz(){
+  let promise = axios.get('https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes');
+  promise.then(exibeQuizz);
+
+}
+getQuizz();
+
+function exibeQuizz(resposta){
+  let quizzes = resposta.data;
+  let areaQuizzesServidor = document.querySelector('.todosOsQuizzes');
+  for(let i = 0;i < quizzes.length; i++){
+    areaQuizzesServidor.innerHTML += `
+
+
+      <div class="quizzExibido" onclick="renderizarQuizz()" style="background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 65.62%, rgba(0, 0, 0, 0.8) 100%),url('${quizzes[i].image}')">
+          
+          <p>${quizzes[i].title}</p>
+      </div>
+
+
+
+    `;
+  
+  }
+
+}
