@@ -7,6 +7,7 @@ let quizz = {
   questions: [],
   levels: [],
 };
+let niveis = [];
 const regexURL = /(https?):\/\/.*\.(jpg|jpeg|png|webp|avif|gif|svg)/; //regex to check if URL is valid
 const regexHex = /#[a-fA-F0-9]{6}/;
 
@@ -413,7 +414,7 @@ function comparador(){
 
 function renderizarQuizz(objeto){
   let obj = objeto.data;
-  console.log(obj);
+  niveis = obj.levels;
   conteiner.innerHTML = '';
   let conteinerPerguntas = document.querySelector('.conteinerPerguntas');
 
@@ -471,4 +472,51 @@ function selecionaReposta(selecionada, certa){
 
     selecionada.classList.add('selecionado');
   }
+
+  if(document.querySelectorAll('.pergunta').length === document.querySelectorAll('.selecionado').length){
+    let respostasCertas = document.querySelectorAll('.selecionado .true').length;
+    let numQuestoes = document.querySelectorAll('.pergunta').length;
+    let ratio = Math.ceil((respostasCertas/numQuestoes)*100);
+    let valorNiveis = []
+    for(let i = 0; i < niveis.length; i++){
+      valorNiveis.push(niveis[i].minValue);
+    }
+    valorNiveis.sort((a, b) => a - b);
+    let nivelObtido;
+    for(let i = 0; i < niveis.length; i++){
+      if(ratio >= valorNiveis[i]){
+
+      }else{
+        nivelObtido = valorNiveis[i - 1]
+      }
+    }
+    let index;
+    for(let i = 0; i < niveis.length; i++){
+      if(nivelObtido === niveis[i].minValue){
+        index = i;
+        break
+      }
+    }
+    renderizarNivel(index,ratio);
+  }
+}
+
+function renderizarNivel (index,ratio){
+  document.querySelector('.perguntas').innerHTML +=`
+    <div class="templateNivel">
+      <div class="tituloNivel">
+          <div>
+              <p>
+                  Acerto de ${ratio} %: ${niveis[index].title}
+              </p>
+          </div>
+      </div>
+      <div>
+        <img src="${niveis[index].image}">
+      </div>
+      <div class="textoNivel">
+        ${niveis[index].text}
+      </div>
+  </div>
+  `;
 }
