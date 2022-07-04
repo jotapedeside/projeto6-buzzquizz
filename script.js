@@ -8,8 +8,11 @@ let quizz = {
   levels: [],
 };
 let niveis = [];
+let id;
 const regexURL = /(https?):\/\/.*\.(jpg|jpeg|png|webp|avif|gif|svg)/; //regex to check if URL is valid
 const regexHex = /#[a-fA-F0-9]{6}/;
+
+getQuizz();
 
 function criarQuizz() {
   conteiner.innerHTML = `
@@ -378,7 +381,6 @@ function getQuizz(){
 
 }
 
-getQuizz();
 
 
 function exibeQuizz(resposta){
@@ -413,8 +415,10 @@ function comparador(){
 
 
 function renderizarQuizz(objeto){
+  conteiner.scrollIntoView();
   let obj = objeto.data;
   niveis = obj.levels;
+  id = obj.id;
   conteiner.innerHTML = '';
   let conteinerPerguntas = document.querySelector('.conteinerPerguntas');
 
@@ -463,19 +467,19 @@ function renderizarQuizz(objeto){
 function selecionaReposta(selecionada, certa){
 
   let respostas = selecionada.parentNode.querySelectorAll('.naoSelecionado');
-  if(respostas.length === selecionada.parentNode.querySelectorAll('.resposta').length)
-  {  for(let i =0; i < respostas.length; i++){
+  if(respostas.length === selecionada.parentNode.querySelectorAll('.resposta').length){
+    for(let i =0; i < respostas.length; i++){
     respostas[i].classList.remove('naoSelecionado');
     
     }
 
 
     selecionada.classList.add('selecionado');
-    setTimeout(() => {
-      if(document.querySelectorAll('.pergunta').length !== document.querySelectorAll('.selecionado').length){
-        document.querySelector('.naoSelecionado').parentNode.scrollIntoView();
-      }
-    }, 2000)
+    if(document.querySelectorAll('.pergunta').length !== document.querySelectorAll('.selecionado').length){
+      setTimeout(() => {
+          document.querySelector('.naoSelecionado').parentNode.scrollIntoView();
+      }, 2000)
+    }
   }
 
   if(document.querySelectorAll('.pergunta').length === document.querySelectorAll('.selecionado').length){
@@ -528,7 +532,29 @@ function renderizarNivel (index,ratio){
         ${niveis[index].text}
       </div>
   </div>
+
+  <button onclick="selecionarQuizz(${id})">Reiniciar Quizz</button>
+  <div class="voltarHome" onclick="voltarHome()"><p>Voltar pra home</p></div>
   `;
 
   document.querySelector('.templateNivel').scrollIntoView();
 }
+
+function voltarHome (){
+    document.querySelector('.conteinerPerguntas').innerHTML = '';
+    conteiner.innerHTML = `
+    <div class="seusQuizzesVazio ">
+      <p>Você não criou nenhum quizz ainda :(</p>
+      <br>
+      <button onclick="criarQuizz ()">Criar Quizz</button>
+    </div>
+    <span>Todos os Quizzes</span>
+    <div class="todosOsQuizzes">
+    
+
+    </div>
+    `;
+
+    getQuizz();
+  }
+

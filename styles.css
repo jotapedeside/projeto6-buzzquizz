@@ -8,7 +8,7 @@ body {
 }
 
 .topo {
-  position: absolute;
+  position: fixed;
   left: 0px;
   top: 0px;
   background: #ec362d;
@@ -21,6 +21,7 @@ body {
   color: #ffffff;
   font-size: 37px;
   font-weight: 700;
+  z-index: 1;
 }
 
 .conteiner {
@@ -346,6 +347,10 @@ button {
   align-items: center;
 }
 
+.perguntas button{
+  margin-bottom: 15px;
+}
+
 .pergunta{
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -356,7 +361,9 @@ button {
   width: 759px;
   height: 676px;
   padding: 25px 35px 35px 35px;
+  margin-bottom: 50px;
 }
+
 
 .perguntaTexto, .tituloNivel{
   grid-column: 1/3;
@@ -366,10 +373,12 @@ button {
   align-items: center;
 }
 
+
 .perguntaTexto p, .tituloNivel p{
   font-weight: 700;
   font-size: 23px;
   color: #FFFFFF;
+  overflow-wrap: anywhere;
 }
 
 .resposta img{
@@ -380,6 +389,10 @@ button {
 .resposta{
   opacity: 0.3;
 
+}
+
+.resposta p{
+  overflow-wrap: anywhere;
 }
 
 
@@ -412,6 +425,7 @@ button {
   height: 430px;
   gap: 15px;
   padding: 18px;
+  margin-bottom: 50px;
 }
 
 .tituloNivel {
@@ -429,6 +443,13 @@ button {
   font-size: 19px;
   color: #484848;
   word-wrap: anywhere;
+}
+
+.voltarHome p{
+  font-weight: 400;
+  font-size: 21px;
+  color: #818181;
+  margin-bottom: 90px;
 }
 
 .escondido {
