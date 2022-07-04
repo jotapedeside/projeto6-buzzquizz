@@ -403,7 +403,9 @@ function getQuizz(){
   promise.then(exibeQuizz);
 
 }
+
 getQuizz();
+
 
 function exibeQuizz(resposta){
   let quizzes = resposta.data;
@@ -412,7 +414,7 @@ function exibeQuizz(resposta){
     areaQuizzesServidor.innerHTML += `
 
 
-      <div class="quizzExibido" onclick="renderizarQuizz()" style="background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 65.62%, rgba(0, 0, 0, 0.8) 100%),url('${quizzes[i].image}')">
+      <div class="quizzExibido" onclick="selecionarQuizz(${quizzes[i].id})" style="background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 65.62%, rgba(0, 0, 0, 0.8) 100%),url('${quizzes[i].image}')">
           
           <p>${quizzes[i].title}</p>
       </div>
@@ -423,4 +425,77 @@ function exibeQuizz(resposta){
   
   }
 
+}
+
+function selecionarQuizz(id){
+  let promise = axios.get(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${id}`);
+  promise.then(renderizarQuizz);
+}
+
+function comparador(){
+  return Math.random() - 0.5;
+}
+
+
+
+function renderizarQuizz(objeto){
+  let obj = objeto.data;
+  console.log(obj);
+  conteiner.innerHTML = '';
+  let conteinerPerguntas = document.querySelector('.conteinerPerguntas');
+
+  conteinerPerguntas.innerHTML = `
+  <div class="bannerQuizz" style="  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),url('${obj.image}')">
+    <div><p>${obj.title}</p></div>
+  </div>
+  <div class="perguntas">
+
+  </div>
+  `;
+
+  let perguntas = document.querySelector('.perguntas');
+  for(let i = 0;i < obj.questions.length; i++){
+    perguntas.innerHTML += `
+      <div class="pergunta">
+          <div class="perguntaTexto" style="background-color:${obj.questions[i].color}"><div><p>${obj.questions[i].title}</p></div></div>
+
+
+      </div>
+    `;
+    let respostas = []
+    for(let j = 0; j < obj.questions[i].answers.length; j++){
+      respostas.push(obj.questions[i].answers[j])
+    }
+    for(let j = respostas.length -1; j > 0; j--){
+      const k = Math.floor(Math.random() * (j + 1));
+      const temp = respostas[j];
+      respostas[j] = respostas[k];
+      respostas[k] = temp
+    }
+
+
+    for(let j = 0; j < respostas.length; j++){
+      document.querySelectorAll('.pergunta')[i].innerHTML +=`
+        <div class="resposta naoSelecionado ${respostas[j].isCorrectAnswer}" onclick="selecionaReposta(this)">
+          <img src=${respostas[j].image}>
+          <p>${respostas[j].text}</p>
+        </div>
+      `
+    }
+  }
+
+}
+
+function selecionaReposta(selecionada, certa){
+
+  let respostas = selecionada.parentNode.querySelectorAll('.naoSelecionado');
+  if(respostas.length === selecionada.parentNode.querySelectorAll('.resposta').length)
+  {  for(let i =0; i < respostas.length; i++){
+    respostas[i].classList.remove('naoSelecionado');
+    
+    }
+
+
+    selecionada.classList.add('selecionado');
+  }
 }
