@@ -8,7 +8,7 @@ let quizz = {
   levels: [],
 };
 const regexURL = /(https?):\/\/.*\.(jpg|jpeg|png|webp|avif|gif|svg)/; //regex to check if URL is valid
-const regexHex = /#[a-zA-z0-9](6)/;
+const regexHex = /#[a-fA-F0-9]{6}/;
 
 function criarQuizz() {
   conteiner.innerHTML = `
@@ -49,13 +49,12 @@ function validarInfoBasica() {
       objBasicInfo[input.childNodes[j].name] = input.childNodes[j].value;
     }
   }
-  console.log(objBasicInfo.title);
 
   if (
-    (objBasicInfo.title.length <= 20 && objBasicInfo.title.length >= 65) ||
+    (objBasicInfo.title.length < 20 && objBasicInfo.title.length > 65) ||
     regexURL.test(objBasicInfo.image) == false ||
-    objBasicInfo.qtdeQuestions <= 3 ||
-    objBasicInfo.qtdeLevels <= 2
+    objBasicInfo.qtdeQuestions < 0 ||
+    objBasicInfo.qtdeLevels < 0 //change
   ) {
     hasError = true;
   }
@@ -135,7 +134,7 @@ function validarPerguntas() {
   let inputIncorrectAnswer2 = document.querySelectorAll(".incorrect2");
   let inputIncorrectAnswer3 = document.querySelectorAll(".incorrect3");
 
-  let perguntasValidas = false;
+  let quizzLevelsValid = false;
   let hasError = false;
 
   const arrQuestion = [];
@@ -204,36 +203,36 @@ function validarPerguntas() {
     let hasInAn3 = false;
 
     if (
-      !inputQuestion[ii].title ||
-      inputQuestion[ii].title < 30 ||
-      !inputQuestion[ii].color ||
-      regexHex.test(inputQuestion[ii].color == false) ||
-      !inputCorrectAnswer[ii].correctAnswer ||
-      !inputCorrectAnswer[ii].image ||
-      regexURL.test(inputCorrectAnswer[ii].image == false) ||
-      (!inputIncorrectAnswer1[ii].answer &&
-        !inputIncorrectAnswer1[ii].image &&
-        !inputIncorrectAnswer2[ii].answer &&
-        !inputIncorrectAnswer2[ii].image &&
-        !inputIncorrectAnswer3[ii].answer &&
-        !inputIncorrectAnswer3[ii].image)
+      !arrQuestion[ii].title ||
+      arrQuestion[ii].title < 20 ||
+      !arrQuestion[ii].color ||
+      regexHex.test(arrQuestion[ii].color) == false ||
+      !arrCorrectAnswer[ii].correctAnswer ||
+      !arrCorrectAnswer[ii].image ||
+      regexURL.test(arrCorrectAnswer[ii].image) == false ||
+      (!objIncorrectAnswer1[ii].answer &&
+        !objIncorrectAnswer1[ii].image &&
+        !objIncorrectAnswer2[ii].answer &&
+        !objIncorrectAnswer2[ii].image &&
+        !objIncorrectAnswer3[ii].answer &&
+        !objIncorrectAnswer3[ii].image)
     )
       hasError = true;
 
     if (
-      inputIncorrectAnswer1[ii].answer &&
-      regexURL.test(inputIncorrectAnswer1[ii].image) == true
+      objIncorrectAnswer1[ii].answer &&
+      regexURL.test(objIncorrectAnswer1[ii].image) == true
     )
       hasInAn1 = true;
     if (
-      inputIncorrectAnswer2[ii].answer &&
-      regexURL.test(inputIncorrectAnswer2[ii].image) == true
+      objIncorrectAnswer2[ii].answer &&
+      regexURL.test(objIncorrectAnswer2[ii].image) == true
     )
       hasInAn2 = true;
 
     if (
-      inputIncorrectAnswer3[ii].answer &&
-      regexURL.test(inputIncorrectAnswer3[ii].image) == true
+      objIncorrectAnswer3[ii].answer &&
+      regexURL.test(objIncorrectAnswer3[ii].image) == true
     )
       hasInAn3 = true;
 
@@ -241,41 +240,6 @@ function validarPerguntas() {
       console.log("Nenhum problema");
     else if (hasInAn1 == false && hasInAn2 == false && hasInAn3 == false)
       hasError = true;
-
-    /*
-    switch (true) {
-      case hasInAn1 == false && hasInAn2 == false && hasInAn3 == true:
-        console.log("lie, lie, vdd");
-        break;
-
-      case hasInAn1 == false && hasInAn2 == true && hasInAn3 == false:
-        console.log("lie, vdd, lie");
-        break;
-
-      case hasInAn1 == false && hasInAn2 == true && hasInAn3 == true:
-        console.log("lie, vdd, vdd");
-        break;
-
-      case hasInAn1 == true && hasInAn2 == false && hasInAn3 == false:
-        console.log("vdd, lie, lie");
-        break;
-
-      case hasInAn1 == true && hasInAn2 == false && hasInAn3 == true:
-        console.log("vdd, lie, vdd");
-        break;
-
-      case hasInAn1 == true && hasInAn2 == true && hasInAn3 == false:
-        console.log("vdd, vdd, lie");
-        break;
-
-      case hasInAn1 == true && hasInAn2 == true && hasInAn3 == true:
-        console.log("vdd, vdd, vdd");
-        break;
-
-      default:
-        console.log("lie, lie, lie");
-        break;
-    }*/
   }
 
   if (hasError == true) {
@@ -285,6 +249,7 @@ function validarPerguntas() {
 
     criarNiveis();
   }
+  console.log(hasError);
   console.log(quizzLevelsValid);
 }
 
