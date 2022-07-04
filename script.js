@@ -7,8 +7,12 @@ let quizz = {
   questions: [],
   levels: [],
 };
+let niveis = [];
+let id;
 const regexURL = /(https?):\/\/.*\.(jpg|jpeg|png|webp|avif|gif|svg)/; //regex to check if URL is valid
 const regexHex = /#[a-fA-F0-9]{6}/;
+
+getQuizz();
 
 function criarQuizz() {
   conteiner.innerHTML = `
@@ -148,9 +152,10 @@ function validarPerguntas() {
       }
     }
     arrCorrectAnswer.push(objCorrectAnswer);
+    arrQuestion.push(arrCorrectAnswer);
   }
-
-  const objIncorrectAnswer1 = [];
+  console.log(arrQuestion);
+  const arrIncorrectAnswer1 = [];
   for (let ii = 0; ii < inputIncorrectAnswer1.length; ii++) {
     const objCorrectAnswer = {};
     for (let jj = 0; jj < inputIncorrectAnswer1[ii].childNodes.length; jj++) {
@@ -159,10 +164,10 @@ function validarPerguntas() {
           inputIncorrectAnswer1[ii].childNodes[jj].value;
       }
     }
-    objIncorrectAnswer1.push(objCorrectAnswer);
+    arrIncorrectAnswer1.push(objCorrectAnswer);
   }
 
-  const objIncorrectAnswer2 = [];
+  const arrIncorrectAnswer2 = [];
   for (let ii = 0; ii < inputIncorrectAnswer2.length; ii++) {
     const objCorrectAnswer = {};
     for (let jj = 0; jj < inputIncorrectAnswer2[ii].childNodes.length; jj++) {
@@ -171,10 +176,10 @@ function validarPerguntas() {
           inputIncorrectAnswer2[ii].childNodes[jj].value;
       }
     }
-    objIncorrectAnswer2.push(objCorrectAnswer);
+    arrIncorrectAnswer2.push(objCorrectAnswer);
   }
 
-  const objIncorrectAnswer3 = [];
+  const arrIncorrectAnswer3 = [];
   for (let ii = 0; ii < inputIncorrectAnswer3.length; ii++) {
     const objCorrectAnswer = {};
     for (let jj = 0; jj < inputIncorrectAnswer3[ii].childNodes.length; jj++) {
@@ -183,7 +188,7 @@ function validarPerguntas() {
           inputIncorrectAnswer3[ii].childNodes[jj].value;
       }
     }
-    objIncorrectAnswer3.push(objCorrectAnswer);
+    arrIncorrectAnswer3.push(objCorrectAnswer);
   }
 
   for (let ii = 0; ii < inputQuestion.length; ii++) {
@@ -199,29 +204,29 @@ function validarPerguntas() {
       !arrCorrectAnswer[ii].correctAnswer ||
       !arrCorrectAnswer[ii].image ||
       regexURL.test(arrCorrectAnswer[ii].image) == false ||
-      (!objIncorrectAnswer1[ii].answer &&
-        !objIncorrectAnswer1[ii].image &&
-        !objIncorrectAnswer2[ii].answer &&
-        !objIncorrectAnswer2[ii].image &&
-        !objIncorrectAnswer3[ii].answer &&
-        !objIncorrectAnswer3[ii].image)
+      (!arrIncorrectAnswer1[ii].answer &&
+        !arrIncorrectAnswer1[ii].image &&
+        !arrIncorrectAnswer2[ii].answer &&
+        !arrIncorrectAnswer2[ii].image &&
+        !arrIncorrectAnswer3[ii].answer &&
+        !arrIncorrectAnswer3[ii].image)
     )
       hasError = true;
 
     if (
-      objIncorrectAnswer1[ii].answer &&
-      regexURL.test(objIncorrectAnswer1[ii].image) == true
+      arrIncorrectAnswer1[ii].answer &&
+      regexURL.test(arrIncorrectAnswer1[ii].image) == true
     )
       hasInAn1 = true;
     if (
-      objIncorrectAnswer2[ii].answer &&
-      regexURL.test(objIncorrectAnswer2[ii].image) == true
+      arrIncorrectAnswer2[ii].answer &&
+      regexURL.test(arrIncorrectAnswer2[ii].image) == true
     )
       hasInAn2 = true;
 
     if (
-      objIncorrectAnswer3[ii].answer &&
-      regexURL.test(objIncorrectAnswer3[ii].image) == true
+      arrIncorrectAnswer3[ii].answer &&
+      regexURL.test(arrIncorrectAnswer3[ii].image) == true
     )
       hasInAn3 = true;
 
@@ -239,16 +244,20 @@ function validarPerguntas() {
     //parse info to quizz global var
     //arrQuestion
     //arrCorrectAnswer
-    //objIncorrectAnswer1
-    //objIncorrectAnswer2
-    //objIncorrectAnswer3
+    //arrIncorrectAnswer1
+    //arrIncorrectAnswer2
+    //arrIncorrectAnswer3
 
-    //    quizz.questions =
+    for (let ii = 0; ii < inputQuestion.length; ii++) {
+      quizz.questions[ii] = arrQuestion[ii];
+      //quizz.questions[ii].answers.push(arrCorrectAnswer[ii]);
+    }
     console.log(arrQuestion);
     console.log(arrCorrectAnswer);
-    console.log(objIncorrectAnswer1);
-    console.log(objIncorrectAnswer2);
-    console.log(objIncorrectAnswer3);
+    console.log(arrIncorrectAnswer1);
+    console.log(arrIncorrectAnswer2);
+    console.log(arrIncorrectAnswer3);
+    console.log(quizz);
 
     criarNiveis();
   }
@@ -382,7 +391,8 @@ function getQuizz() {
   );
   promise.then(exibeQuizz);
 }
-getQuizz();
+
+
 
 function exibeQuizz(resposta) {
   let quizzes = resposta.data;
@@ -391,7 +401,7 @@ function exibeQuizz(resposta) {
     areaQuizzesServidor.innerHTML += `
 
 
-      <div class="quizzExibido" onclick="renderizarQuizz()" style="background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 65.62%, rgba(0, 0, 0, 0.8) 100%),url('${quizzes[i].image}')">
+      <div class="quizzExibido" onclick="selecionarQuizz(${quizzes[i].id})" style="background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 65.62%, rgba(0, 0, 0, 0.8) 100%),url('${quizzes[i].image}')">
           
           <p>${quizzes[i].title}</p>
       </div>
@@ -401,3 +411,159 @@ function exibeQuizz(resposta) {
     `;
   }
 }
+
+function selecionarQuizz(id){
+  let promise = axios.get(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${id}`);
+  promise.then(renderizarQuizz);
+}
+
+function comparador(){
+  return Math.random() - 0.5;
+}
+
+
+
+function renderizarQuizz(objeto){
+  conteiner.scrollIntoView();
+  let obj = objeto.data;
+  niveis = obj.levels;
+  id = obj.id;
+  conteiner.innerHTML = '';
+  let conteinerPerguntas = document.querySelector('.conteinerPerguntas');
+
+  conteinerPerguntas.innerHTML = `
+  <div class="bannerQuizz" style="  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),url('${obj.image}')">
+    <div><p>${obj.title}</p></div>
+  </div>
+  <div class="perguntas">
+
+  </div>
+  `;
+
+  let perguntas = document.querySelector('.perguntas');
+  for(let i = 0;i < obj.questions.length; i++){
+    perguntas.innerHTML += `
+      <div class="pergunta">
+          <div class="perguntaTexto" style="background-color:${obj.questions[i].color}"><div><p>${obj.questions[i].title}</p></div></div>
+
+
+      </div>
+    `;
+    let respostas = []
+    for(let j = 0; j < obj.questions[i].answers.length; j++){
+      respostas.push(obj.questions[i].answers[j])
+    }
+    for(let j = respostas.length -1; j > 0; j--){
+      const k = Math.floor(Math.random() * (j + 1));
+      const temp = respostas[j];
+      respostas[j] = respostas[k];
+      respostas[k] = temp
+    }
+
+
+    for(let j = 0; j < respostas.length; j++){
+      document.querySelectorAll('.pergunta')[i].innerHTML +=`
+        <div class="resposta naoSelecionado ${respostas[j].isCorrectAnswer}" onclick="selecionaReposta(this)">
+          <img src=${respostas[j].image}>
+          <p>${respostas[j].text}</p>
+        </div>
+      `
+    }
+  }
+
+}
+
+function selecionaReposta(selecionada, certa){
+
+  let respostas = selecionada.parentNode.querySelectorAll('.naoSelecionado');
+  if(respostas.length === selecionada.parentNode.querySelectorAll('.resposta').length){
+    for(let i =0; i < respostas.length; i++){
+    respostas[i].classList.remove('naoSelecionado');
+    
+    }
+
+
+    selecionada.classList.add('selecionado');
+    if(document.querySelectorAll('.pergunta').length !== document.querySelectorAll('.selecionado').length){
+      setTimeout(() => {
+          document.querySelector('.naoSelecionado').parentNode.scrollIntoView();
+      }, 2000)
+    }
+  }
+
+  if(document.querySelectorAll('.pergunta').length === document.querySelectorAll('.selecionado').length){
+    let respostasCertas = document.querySelectorAll('.selecionado.true').length;
+    let numQuestoes = document.querySelectorAll('.pergunta').length;
+    let ratio = Math.ceil((respostasCertas/numQuestoes)*100);
+    let valorNiveis = []
+    for(let i = 0; i < niveis.length; i++){
+      valorNiveis.push(niveis[i].minValue);
+    }
+    valorNiveis.sort((a, b) => a - b);
+    let nivelObtido;
+    for(let i = 0; i < niveis.length; i++){
+      if(ratio >= valorNiveis[i]){
+
+      }else{
+        nivelObtido = valorNiveis[i - 1]
+      }
+    }
+    let index;
+    for(let i = 0; i < niveis.length; i++){
+      if(nivelObtido === niveis[i].minValue){
+        index = i;
+
+        setTimeout(() => {
+          renderizarNivel(index,ratio);
+        } ,2000)
+
+        break
+      }
+    }
+  }
+}
+
+function renderizarNivel (index,ratio){
+
+  document.querySelector('.perguntas').innerHTML +=`
+    <div class="templateNivel">
+      <div class="tituloNivel">
+          <div>
+              <p>
+                  Acerto de ${ratio} %: ${niveis[index].title}
+              </p>
+          </div>
+      </div>
+      <div>
+        <img src="${niveis[index].image}">
+      </div>
+      <div class="textoNivel">
+        ${niveis[index].text}
+      </div>
+  </div>
+
+  <button onclick="selecionarQuizz(${id})">Reiniciar Quizz</button>
+  <div class="voltarHome" onclick="voltarHome()"><p>Voltar pra home</p></div>
+  `;
+
+  document.querySelector('.templateNivel').scrollIntoView();
+}
+
+function voltarHome (){
+    document.querySelector('.conteinerPerguntas').innerHTML = '';
+    conteiner.innerHTML = `
+    <div class="seusQuizzesVazio ">
+      <p>Você não criou nenhum quizz ainda :(</p>
+      <br>
+      <button onclick="criarQuizz ()">Criar Quizz</button>
+    </div>
+    <span>Todos os Quizzes</span>
+    <div class="todosOsQuizzes">
+    
+
+    </div>
+    `;
+
+    getQuizz();
+  }
+
