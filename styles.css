@@ -329,6 +329,7 @@ button {
   justify-content: center;
   align-items: center;
   color: #ffffff;
+  overflow-wrap: anywhere;
 
 }
 
@@ -457,4 +458,55 @@ button {
 }
 
 @media (max-width: 1100px) {
+
+  
+  .quizzExibido{
+    width: 100%;
+
+    
+  }
+
+
+  .conteinerPergunta{
+    width: 100vw;
+    
+  }
+  
+  .pergunta{
+
+    width: 100vw;
+    height: 50vh;
+    padding: 15px 25px 25px 25px ;
+    margin-bottom: 28px;
+    
+  }
+  
+
+
+  .perguntaTexto > div, .tituloNivel > div{
+    width: 95%;
+  }
+  
+  
+  .resposta img{
+    width: 90%;
+    height: 65%;
+
+  }
+
+
+  .templateNivel{
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+  }
+
+  .templateNivel img{
+    width: 90%;
+  }
+  
+
 }
